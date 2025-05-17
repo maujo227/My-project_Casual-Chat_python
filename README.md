@@ -20,6 +20,9 @@ The goal is to find a domain and name that works well for the entire community.
 - Currently hosted on [PythonAnywhere](https://www.pythonanywhere.com/)
 - Can be easily deployed on [Render](https://render.com) or other compatible cloud platforms
 
+⚖️ LICENSE
+GPL-3.0
+
 📫 How to reach me: mauro.drg@gmail.com
 😄 Pronouns: ...
 ⚡ Fun fact: ...
