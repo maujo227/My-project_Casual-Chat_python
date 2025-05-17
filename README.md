@@ -15,6 +15,11 @@ The official site for this project is www.chatmmy.com, although it is currently 
 If you would like to propose a different URL or alternative name for the project, feel free to suggest it!
 The goal is to find a domain and name that works well for the entire community.
 
+🚀 Features
+
+- Currently hosted on [PythonAnywhere](https://www.pythonanywhere.com/)
+- Can be easily deployed on [Render](https://render.com) or other compatible cloud platforms
+
 📫 How to reach me: mauro.drg@gmail.com
 😄 Pronouns: ...
 ⚡ Fun fact: ...
