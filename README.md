@@ -3,13 +3,10 @@
 🌱 I’m currently learning coding with Python with Visual Code Studio
 💞️ I’m looking to collaborate on a project with Python for a Casual Chat website.
 
-## 🚧 Stato del progetto
+🚧 Project status
 
-Questo progetto è stato avviato come prototipo iniziale, ma **attualmente non è mantenuto attivamente**.
-Attualmente non ho tempo per sviluppare attivamente questo progetto, ma credo che abbia potenziale.
-Se qualcuno fosse interessato a contribuire, migliorare, fatevi avanti!
-Sarei felice se altri volessero contribuire, forkarlo o portarlo avanti!  
-Contributi, segnalazioni di bug e fork sono i benvenuti 🙌
+This project was started as an initial prototype, but is currently not actively maintained. I currently don't have time to actively develop this project, but I believe it has potential. If anyone is interested in contributing, improving, come forward! I would be happy if others would like to contribute, fork it or carry it forward!
+Contributions, bug reports and forks are welcome 🙌
 
 📫 How to reach me: mauro.drg@gmail.com
 😄 Pronouns: ...
