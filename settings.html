@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+
+    <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration = {"siteId":3869842,"cookiePolicyId":92010610,"lang":"en","storage":{"useSiteId":true}};
+        </script>
+        <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3869842.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/gpp/stub.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async>
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 20px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(14px);
+        }
+        .switch-container {
+            width: 100%;
+            max-width: 400px; /* Uniform size with other inputs */
+            margin: 20px auto;
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+        .switch-container label {
+            margin: 0;
+            font-weight: normal;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Settings</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <ul class="flashes">
+    {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endwith %}
+      
+       <form action="/settings" method="POST" enctype="multipart/form-data">
+            <!-- Upload foto -->
+            <label for="photo" style="margin-bottom: 5px; display: block;">Change your photo:</label>
+            <input type="file" name="photo" id="photo" accept="image/*" style="margin-bottom: 20px; display: block;">
+    
+            <!-- Età -->
+            <div class="form-group">
+                <label for="age" >Age</label>
+                <input type="number" id="age" name="age" value="{{ user.age }}" placeholder="Insert your age" required min="{{ user.age }}" max="100">
+            </div>
+
+            
+            <!-- Filtro Età -->
+    <div class="form-group">
+        <label for="age-range">Age Range</label>
+    <div id="age-range-slider" style="margin: 20px 0;"></div>
+    <div style="display: flex; justify-content: space-between;">
+        <span>Min: <output id="min-age-output">{{ user.min_age }}</output></span>
+        <span>Max: <output id="max-age-output">{{ user.max_age }}</output></span>
+    </div>
+    <input type="hidden" id="min-age" name="min_age" value="{{ user.min_age }}">
+    <input type="hidden" id="max-age" name="max_age" value="{{ user.max_age }}">
+</div>
+
+<!-- Include la libreria noUiSlider -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const slider = document.getElementById('age-range-slider');
+        const minAgeOutput = document.getElementById('min-age-output');
+        const maxAgeOutput = document.getElementById('max-age-output');
+        const minAgeInput = document.getElementById('min-age');
+        const maxAgeInput = document.getElementById('max-age');
+
+        // Valori iniziali dal server
+        const initialMinAge = parseInt(minAgeInput.value) || 18;
+        const initialMaxAge = parseInt(maxAgeInput.value) || 100;
+
+        // Inizializza noUiSlider
+        noUiSlider.create(slider, {
+            start: [initialMinAge, initialMaxAge],
+            connect: true,
+            range: {
+                min: 18,
+                max: 100
+            },
+            step: 1
+        });
+
+        // Aggiorna gli output e i campi nascosti quando lo slider cambia
+        slider.noUiSlider.on('update', function (values, handle) {
+            const value = Math.round(values[handle]);
+            if (handle === 0) { // Cursore sinistro
+                minAgeOutput.textContent = value;
+                minAgeInput.value = value;
+            } else { // Cursore destro
+                maxAgeOutput.textContent = value;
+                maxAgeInput.value = value;
+            }
+        });
+    });
+</script>
+
+
+            <!-- Lingua della chat -->
+            <div class="form-group">
+                <label for="chatlanguage">Chat language</label>
+                <input type="text" id="chatlanguage" name="chatlanguage" value="{{ user.chatlanguage }}" placeholder="Enter chat language" required style="margin-bottom: 10px;">
+            </div>
+            
+            <script>
+                // Aggiunge un evento per normalizzare l'input e suggerire lingue valide
+                const allowedLanguages = ["english", "french", "spanish", "portuguese", "german", "italian"];
+                const inputElement = document.getElementById('chatlanguage');
+            
+                // Funzione per mostrare suggerimenti dinamici
+                function updateSuggestionBox() {
+                    const suggestionBoxId = 'suggestion-box';
+                    let suggestionBox = document.getElementById(suggestionBoxId);
+            
+                    // Creazione del box dei suggerimenti se non esiste
+                    if (!suggestionBox) {
+                        suggestionBox = document.createElement('div');
+                        suggestionBox.id = suggestionBoxId;
+                        suggestionBox.style.position = 'absolute';
+                        suggestionBox.style.border = '1px solid #ccc';
+                        suggestionBox.style.backgroundColor = '#fff';
+                        suggestionBox.style.zIndex = '1000';
+                        suggestionBox.setAttribute('translate', 'no'); // Evita che venga tradotto dai traduttori online
+                        document.body.appendChild(suggestionBox);
+                    }
+            
+                    // Posizionamento del box sotto il campo di input
+                    const rect = inputElement.getBoundingClientRect();
+                    suggestionBox.style.left = `${rect.left + window.scrollX}px`;
+                    suggestionBox.style.top = `${rect.bottom + window.scrollY}px`;
+                    suggestionBox.style.width = `${rect.width}px`;
+            
+                    // Mostra tutte le 6 parole disponibili nel menu a tendina
+                    suggestionBox.innerHTML = allowedLanguages.map(s => `<div style="padding: 5px; cursor: pointer;" translate="no">${s}</div>`).join('');
+            
+                    // Aggiunge un evento di clic per ogni suggerimento
+                    Array.from(suggestionBox.children).forEach(child => {
+                        child.addEventListener('click', function () {
+                            let currentValues = inputElement.value.split(' ').map(v => v.trim()).filter(v => v.length > 0);
+                            if (!currentValues.includes(this.textContent) && currentValues.length < 6) {
+                                currentValues.push(this.textContent);
+                            }
+                            inputElement.value = currentValues.join(' '); // Aggiorna mantenendo le parole esistenti
+                            suggestionBox.innerHTML = ''; // Pulisce il box
+                            inputElement.focus(); // Mantiene il focus sul campo di input
+                        });
+                    });
+                }
+            
+                // Impedisce input diversi da barra spaziatrice e backspace, compatibile con tastiere fisiche e virtuali
+inputElement.addEventListener('keydown', function (e) {
+    const allowedKeys = ["Backspace", " "]; // Backspace e Spazio
+    if (!allowedKeys.includes(e.key)) {
+        e.preventDefault(); // Impedisce qualsiasi altro input
+    }
+});
+
+inputElement.addEventListener('beforeinput', function (e) {
+    const allowedInputs = [" "]; // Spazio come input diretto
+    if (!allowedInputs.includes(e.data) && e.inputType !== 'deleteContentBackward') {
+        e.preventDefault(); // Impedisce input non consentiti
+    }
+});
+
+            
+                // Evento per aggiornare il menu a tendina ad ogni input
+                inputElement.addEventListener('input', function () {
+                    updateSuggestionBox();
+                });
+            
+                // Evento per mostrare il menu a tendina automaticamente dopo ogni spazio
+                inputElement.addEventListener('keyup', function (e) {
+                    if (e.key === ' ') {
+                        updateSuggestionBox();
+                    }
+                });
+            
+                // Evento per gestire correttamente il click sulla parola suggerita
+                inputElement.addEventListener('click', function () {
+                    const input = this.value.trim();
+                    const currentValues = input.split(/\s+/).map(lang => lang.trim()).filter(lang => lang.length > 0);
+            
+                    // Ricombina in formato corretto, aggiungendo nuove lingue senza rimuovere quelle esistenti
+                    this.value = Array.from(new Set(currentValues)).join(' ');
+                });
+            </script>            
+                         
+
+            <!-- Switch per il filtro della lingua -->
+    <div class="switch-container">
+        <label for="language-filter">Filter by Chat language</label>
+        <label class="switch">
+            <input type="checkbox" id="language-filter" name="switch" {% if user.switch_active %}checked{% endif %}>
+            <span class="slider"></span>
+        </label>
+    </div>       
+
+    <script>
+        // Normalizza il formato delle lingue prima dell'invio
+        document.getElementById('chatlanguage').addEventListener('blur', function() {
+            const input = this.value.trim();
+            if (input) {
+                // Trasforma in lowercase, uppercase, o capitalize ogni lingua
+                this.value = input.split(',')
+                                  .map(lang => lang.trim().toLowerCase()) // Cambia .toLowerCase() in .toUpperCase() o capitalize se necessario
+                                  .join(', ');
+            }
+        });
+    </script>
+
+            <!-- Bottoni -->
+            <div class="buttons">
+                <button type="submit" style="padding: 8px 16px; font-size: 1rem; border-radius: 20px; background-color: rgb(49, 125, 204); color: white; border: none; cursor: pointer;">
+                    Save
+                </button>
+                <button type="button" class="btn-secondary" onclick="window.location.href='/home';" style="padding: 8px 16px; font-size: 1rem; border-radius: 20px; background-color: rgb(206, 74, 73); color: white; border: none; cursor: pointer;">
+                    Back to Home
+                </button>
+            </div>
+        </form>
+        
+    </div>
+    
+    
+    <footer style="text-align: center;">
+        <p style="font-size: 15px;">&copy; {{ year }} Chatmmy.com. All Rights Reserved.</p>
+        <a href="https://www.iubenda.com/privacy-policy/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Privacy Policy">Privacy Policy</a>
+        <script type="text/javascript">
+            (function (w, d) {
+                var loader = function () {
+                    var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                    s.src = "https://cdn.iubenda.com/iubenda.js";
+                    tag.parentNode.insertBefore(s, tag);
+                };
+                if (w.addEventListener) {
+                    w.addEventListener("load", loader, false);
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", loader);
+                } else {
+                    w.onload = loader;
+                }
+            })(window, document);
+        </script>
+        
+        <a href="https://www.iubenda.com/privacy-policy/92010610/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Cookie Policy">Cookie Policy</a>
+        <script type="text/javascript">
+            (function (w, d) {
+                var loader = function () {
+                    var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                    s.src = "https://cdn.iubenda.com/iubenda.js";
+                    tag.parentNode.insertBefore(s, tag);
+                };
+                if (w.addEventListener) {
+                    w.addEventListener("load", loader, false);
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", loader);
+                } else {
+                    w.onload = loader;
+                }
+            })(window, document);
+        </script>
+        
+        <a href="https://www.iubenda.com/terms-and-conditions/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Terms and Conditions">Terms and Conditions</a>
+        <script type="text/javascript">
+            (function (w, d) {
+                var loader = function () {
+                    var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                    s.src = "https://cdn.iubenda.com/iubenda.js";
+                    tag.parentNode.insertBefore(s, tag);
+                };
+                if (w.addEventListener) {
+                    w.addEventListener("load", loader, false);
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", loader);
+                } else {
+                    w.onload = loader;
+                }
+            })(window, document);
+        </script>
+    </footer>
+    
+    
+</body>
+</html>
+

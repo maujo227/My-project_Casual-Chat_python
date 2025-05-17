@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <div class="top-bar">
+        <img class="logo-image" src="/static/images/Logo_Chatmmy_2.jpeg" alt="Chatmmy Logo">
+        <span class="logo">Chatmmy</span>
+    </div>  
+    
+    <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration = {"siteId":3869842,"cookiePolicyId":92010610,"lang":"en","storage":{"useSiteId":true}};
+        </script>
+        <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3869842.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/gpp/stub.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async>
+    </script>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Register</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <!-- Input per username -->
+            <input type="text" name="username" placeholder="Username" required><br>
+    
+            <!-- Upload foto -->
+            <label for="photo">Upload your photo:</label><br>
+            <input type="file" name="photo" id="photo" accept="image/*" required><br>
+    
+            <!-- Età -->
+            <input type="number" name="age" placeholder="Age" required min="18" max="100"><br>
+    
+            <!-- Selezione genere -->
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select><br>
+    
+            <!-- Lingua della chat -->
+            <select name="chatlanguage" required>
+                <option value="">Select Language</option>
+                <option value="english">english</option>
+                <option value="french">french</option>
+                <option value="german">german</option>
+                <option value="italian">italian</option>
+                <option value="portuguese">portuguese</option>
+                <option value="spanish">spanish</option>
+            </select><br>
+    
+            <!-- Password -->
+            <input type="password" name="password" placeholder="Password" required><br>
+    
+            <!-- Pulsante di registrazione -->
+            <button type="submit" style="background-color: rgb(206, 74, 73); border: none; color: white; padding: 10px 20px; cursor: pointer;">Register</button>
+        </form>
+        <a href="/login">Already have an account? Login here</a>
+        <script>
+            document.getElementById('registerForm').addEventListener('submit', async function(event) {
+                event.preventDefault(); // Previeni il comportamento predefinito del modulo
+                
+                const formData = new FormData(this);
+
+                try {
+                    const response = await fetch('/register', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert(result.message);
+                        window.location.href = '/login'; // Reindirizza alla pagina di login
+                    } else {
+                        alert(result.message); // Mostra un avviso per gli errori
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred during registration. Please try again.');
+                }
+            });
+        </script>
+    </div>
+    
+<footer>
+    <p style="font-size: 15px; margin-top: 30px;">&copy; {{ year }} Chatmmy.com. All Rights Reserved.</p>
+    <a href="https://www.iubenda.com/privacy-policy/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Privacy Policy">Privacy Policy</a>
+    <script type="text/javascript">
+        (function (w,d) {
+            var loader = function () {
+                var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                s.src="https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s,tag);
+            };
+            if(w.addEventListener){
+                w.addEventListener("load", loader, false);
+            }else if(w.attachEvent){
+                w.attachEvent("onload", loader);
+            }else{
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+    
+<a href="https://www.iubenda.com/privacy-policy/92010610/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Cookie Policy">Cookie Policy</a>
+    <script type="text/javascript">
+        (function (w,d) {
+            var loader = function () {
+                var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                s.src="https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s,tag);
+            };
+            if(w.addEventListener){
+                w.addEventListener("load", loader, false);
+            }else if(w.attachEvent){
+                w.attachEvent("onload", loader);
+            }else{
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+<a href="https://www.iubenda.com/terms-and-conditions/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Terms and Conditions">Terms and Conditions</a>
+    <script type="text/javascript">
+        (function (w,d) {
+            var loader = function () {
+                var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                s.src="https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s,tag);
+            };
+            if(w.addEventListener){
+                w.addEventListener("load", loader, false);
+            }else if(w.attachEvent){
+                w.attachEvent("onload", loader);
+            }else{
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+</footer>
+
+</body>
+</html>

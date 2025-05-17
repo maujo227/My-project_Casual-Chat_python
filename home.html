@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <div class="top-bar">
+        <img class="logo-image" src="/static/images/Logo_Chatmmy_2.jpeg" alt="Chatmmy Logo">
+        <span class="logo">Chatmmy</span>
+    </div> 
+    
+    <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration = {"siteId":3869842,"cookiePolicyId":92010610,"lang":"en","storage":{"useSiteId":true}};
+        </script>
+        <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3869842.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/gpp/stub.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async>
+    </script>
+    
+</head>
+
+<body>
+    <div class="home-container" style="border: 2px solid #ccc; border-radius: 20px; padding: 20px; background-color: #f9f9f9; max-width: 400px; margin: auto; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  margin-top: 40px;">
+        <h3>
+          <span style="color: black; font-size: 26px;">Matched User:</span> 
+          <span style="color: darkorange; font-size: 24px;">{{ match.username }}</span>
+        </h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+          <!-- Foto e nome utente -->
+          <img src="{{ url_for('static', filename=match.photo) }}" alt="{{ match.username }}" style="width: 110px; height: 110px; border-radius: 50%;">
+          <p style="font-size: 22px; margin-bottom: 2px;">Age: {{ match.age }}</p>
+          <p style="font-size: 22px; margin-top: 2px; margin-bottom: 2px;">Gender: {{ match.gender }}</p>
+          <span style="color: rgb(0, 0, 0); font-size: 22px; display: inline-block;">Chat language:</span>
+          <span style="color: rgb(51, 120, 11); font-size: 22px;">{{ match.chatlanguage }}</span>
+      
+          <!-- Bottoni -->
+          <div style="text-align: center;">
+            <a href="/home" style="display: inline-block; padding: 8px 16px; background-color: rgb(204, 139, 49); color: white; text-decoration: none; border-radius: 20px; text-align: center; margin: 0 10px; margin-top: 10px; font-size: 1rem;">
+              Skip
+            </a>
+            <a href="/chat/{{ match.id }}" style="display: inline-block; padding: 8px 16px; background-color: rgb(49, 124, 204); color: white; text-decoration: none; border-radius: 20px; text-align: center; margin: 0 10px; margin-top: 10px; font-size: 1rem;">
+              Chat
+            </a>
+          </div>
+        </div>
+      </div>
+      
+         <a href="/newchat" style="display: inline-block; padding: 8px 16px; background-color: rgb(206, 74, 73); color: white; text-decoration: none; border-radius: 20px; text-align: center; margin-top: 50px; font-size: 1rem;">
+        New chat
+        </a>
+            <a href="/favorites" style="display: inline-block; padding: 8px 16px; background-color: rgb(206, 74, 73); color: white; text-decoration: none; border-radius: 20px; text-align: center; margin-top: 20px; font-size: 1rem;">
+                Favorites
+            </a>
+            <a href="/settings" style="display: inline-block; padding: 8px 16px; background-color: rgb(206, 74, 73); color: white; text-decoration: none; border-radius: 20px; text-align: center; margin-top: 20px; font-size: 1rem;">
+                Settings
+            </a>
+            <a href="/logout" style="display: inline-block; padding: 8px 16px; background-color: rgb(206, 74, 73); color: white; text-decoration: none; border-radius: 20px; text-align: center; margin-bottom: 50px; font-size: 1rem;">
+                Logout
+            </a>            
+        
+    </div>
+
+<footer>
+    <p style="font-size: 15px;">&copy; {{ year }} Chatmmy.com. All Rights Reserved.</p>
+    <a href="https://www.iubenda.com/privacy-policy/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Privacy Policy">Privacy Policy</a>
+    <script type="text/javascript">
+        (function (w,d) {
+            var loader = function () {
+                var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                s.src="https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s,tag);
+            };
+            if(w.addEventListener){
+                w.addEventListener("load", loader, false);
+            }else if(w.attachEvent){
+                w.attachEvent("onload", loader);
+            }else{
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+    
+<a href="https://www.iubenda.com/privacy-policy/92010610/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Cookie Policy">Cookie Policy</a>
+    <script type="text/javascript">
+        (function (w,d) {
+            var loader = function () {
+                var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                s.src="https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s,tag);
+            };
+            if(w.addEventListener){
+                w.addEventListener("load", loader, false);
+            }else if(w.attachEvent){
+                w.attachEvent("onload", loader);
+            }else{
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+<a href="https://www.iubenda.com/terms-and-conditions/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Terms and Conditions">Terms and Conditions</a>
+    <script type="text/javascript">
+        (function (w,d) {
+            var loader = function () {
+                var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                s.src="https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s,tag);
+            };
+            if(w.addEventListener){
+                w.addEventListener("load", loader, false);
+            }else if(w.attachEvent){
+                w.attachEvent("onload", loader);
+            }else{
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+</footer>
+
+</body>
+</html>

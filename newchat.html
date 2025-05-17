@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New Chat Users</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <div class="top-bar">
+        <img class="logo-image" src="/static/images/Logo_Chatmmy_2.jpeg" alt="Chatmmy Logo">
+        <span class="logo">Chatmmy</span>
+    </div>
+    
+    <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration = {"siteId":3869842,"cookiePolicyId":92010610,"lang":"en","storage":{"useSiteId":true}};
+        </script>
+        <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3869842.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/gpp/stub.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async>
+    </script>
+
+</head>
+
+<style>
+    .users-list {
+        display: flex;
+        flex-direction: column; /* Disporre gli elementi in colonna */
+        gap: 20px; /* Spaziatura tra gli elementi */
+        align-items: center; /* Centrare gli elementi nella colonna */
+    }
+
+    .user-entry {
+        width: 300px; /* Larghezza fissa per gli elementi */
+        border: 1px solid #ccc; /* Bordo per separare visivamente gli utenti */
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center; /* Centrare il testo */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-entry img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    .user-entry h3 {
+        margin: 10px 0;
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    .user-entry p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .user-entry button {
+        background-color: rgb(49, 124, 204);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 10px;
+    }
+
+    .user-entry button:hover {
+        background-color: rgb(30, 90, 150);
+    }
+    .message-badge {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        background-color: red; /* Badge sempre rosso */
+    }
+
+</style>
+</head>
+<body>
+    <h1 style="text-align: center;">Users in Newchat</h1>
+<div class="users-list">
+    {% for user, message_count, is_new in users %}
+    <div class="user-entry" style="position: relative; border: 1px solid #ddd; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <!-- Avatar utente -->
+        <div style="position: relative; display: inline-block;">
+            <img src="{{ url_for('static', filename=user.photo) }}" alt="{{ user.username }}" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #ddd;">
+
+            <!-- Badge del messaggio: Mostra solo se ci sono nuovi messaggi -->
+            {% if is_new %}
+            <div 
+                class="message-badge red" 
+                style="position: absolute; top: -10px; right: -10px; background-color: red; color: white; padding: 5px 10px; border-radius: 50%; font-size: 12px; font-weight: bold;">
+                {{ message_count }}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Informazioni utente -->
+        <h3 style="margin-top: 15px; font-size: 24px;">{{ user.username }}</h3>
+        <p style="font-size: 22px;">Age: {{ user.age }}</p>
+        <p style="font-size: 22px;">Gender: {{ user.gender }}</p>
+        <p style="font-size: 22px;">Chat Language:</p>
+        <p style="color: rgb(51, 120, 11);font-size: 22px;">{{ user.chatlanguage }}</p>
+
+        <!-- Pulsanti -->
+        <form action="{{ url_for('remove_from_newchat', user_id=user.id) }}" method="POST" style="display: inline;">
+            <button type="button" style="background-color: rgb(206, 74, 73); color: white; padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-size: 1rem;" onclick="showRemoveAlert(event)">
+                Remove
+            </button>
+        </form>
+
+        <form action="{{ url_for('chat', match_id=user.id) }}" method="GET" style="display: inline;">
+            <button type="submit" style="background-color: rgb(49, 124, 204); color: white; padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-size: 1rem;">
+                Chat
+            </button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+    
+    <script>
+        function showRemoveAlert(event) {
+            if (confirm("Are you sure you want to remove this user from Newchat?")) {
+                const form = event.target.closest('form');
+                form.submit();
+            }
+        }
+    </script>
+
+<footer>
+    <p style="font-size: 15px;">&copy; {{ year }} Chatmmy.com. All Rights Reserved.</p>
+    <a href="https://www.iubenda.com/privacy-policy/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Privacy Policy">Privacy Policy</a>
+    <script type="text/javascript">
+        (function (w,d) {
+            var loader = function () {
+                var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                s.src="https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s,tag);
+            };
+            if(w.addEventListener){
+                w.addEventListener("load", loader, false);
+            }else if(w.attachEvent){
+                w.attachEvent("onload", loader);
+            }else{
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+    
+<a href="https://www.iubenda.com/privacy-policy/92010610/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Cookie Policy">Cookie Policy</a>
+    <script type="text/javascript">
+        (function (w,d) {
+            var loader = function () {
+                var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                s.src="https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s,tag);
+            };
+            if(w.addEventListener){
+                w.addEventListener("load", loader, false);
+            }else if(w.attachEvent){
+                w.attachEvent("onload", loader);
+            }else{
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+<a href="https://www.iubenda.com/terms-and-conditions/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Terms and Conditions">Terms and Conditions</a>
+    <script type="text/javascript">
+        (function (w,d) {
+            var loader = function () {
+                var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+                s.src="https://cdn.iubenda.com/iubenda.js";
+                tag.parentNode.insertBefore(s,tag);
+            };
+            if(w.addEventListener){
+                w.addEventListener("load", loader, false);
+            }else if(w.attachEvent){
+                w.attachEvent("onload", loader);
+            }else{
+                w.onload = loader;
+            }
+        })(window, document);
+    </script>
+</footer>
+
+</body>
+</html>

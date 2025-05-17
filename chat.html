@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat with {{ match.username }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <div class="top-bar">
+        <img class="logo-image" src="/static/images/Logo_Chatmmy_2.jpeg" alt="Chatmmy Logo">
+        <span class="logo">Chatmmy</span>
+    </div>
+
+    <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration = {"siteId":3869842,"cookiePolicyId":92010610,"lang":"en","storage":{"useSiteId":true}};
+        </script>
+        <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3869842.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/gpp/stub.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async>
+    </script>
+
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          background-color: #f5f5f5;
+        }
+        .chat-container {
+          width: 90%;
+          max-width: 600px;
+          margin: 20px auto;
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 15px;
+        }
+        .chat-box {
+          display: flex;
+          flex-direction: column;
+          max-height: 400px;
+          overflow-y: scroll;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          margin-top: 15px;
+          margin-bottom: 15px;
+        }
+        .message {
+          margin: 5px 0;
+          padding: 10px;
+          border-radius: 10px;
+          max-width: 70%;
+        }
+        .message.me {
+          align-self: flex-end;
+          background-color: #e0f7fa;
+          text-align: right;
+        }
+        .message.them {
+          align-self: flex-start;
+          background-color: #e8f5e9;
+          text-align: left;
+        }
+        .message .username {
+          font-size: 0.8rem;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+        .message-input {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .message-input input {
+          flex-grow: 1;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+        }
+        .message-input button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          background-color: #4caf50;
+          color: white;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        .message-input button:hover {
+          background-color: #388e3c;
+        }
+        .actions {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 20px;
+        }
+        .actions button {
+          padding: 10px 15px;
+          font-size: 1rem;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        .actions .favorite {
+          background-color: #007bff;
+          color: white;
+        }
+        .actions .favorite:hover {
+          background-color: #0056b3;
+        }
+        .actions .skip {
+          background-color: rgb(244, 67, 54);
+          color: white;
+        }
+        .actions .skip:hover {
+          background-color: #d32f2f;
+        }
+        </style>
+        
+    </head>
+    <body>
+        <div class="chat-container">
+            <h2 style="margin-top: 70px;">Chat with <span style="color: rgb(255, 140, 0);">{{ match.username }}</span></h2>
+            <div id="chat-box" class="chat-box"></div>
+            <div class="message-input" style="display: flex; gap: 10px; width: 100%;">
+                <input type="text" id="message-input" placeholder="Type your message..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                <button onclick="sendMessage()" style="padding: 8px 16px; background-color: rgb(49, 124, 204); color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 1rem;">
+                    Send
+                </button>
+            </div>        
+                <div class="actions">
+
+                    <div class="actions">
+                        <!-- Pulsante solo per Add to Favorites -->
+                        <button class="favorite" 
+                                onclick="addToFavorites();" 
+                                style="background-color: rgb(255, 140, 0); color: white; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; font-size: 1rem;">
+                            Add to Favorites
+                        </button>
+                    </div>
+                    
+                    
+                    
+                    <button class="skip" onclick="showCustomAlert()" style="background-color: rgb(206, 74, 73); color: white; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; font-size: 1rem;">
+                        Exit
+                    </button>
+                    
+                    <div id="customAlert" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); width: 300px; padding: 20px; text-align: center; z-index: 1000;">
+                        <p style="margin-bottom: 20px; font-size: 1.2rem;">Attention! Add the user to favorites if you don't want to lose the chat.</p>
+                        <button onclick="confirmCustomExit()" style="background-color: rgb(206, 74, 73); color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; margin-right: 10px;">Confirm Exit</button>
+                        <button onclick="closeCustomAlert()" style="background-color: #ccc; color: black; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer;">Cancel</button>
+                    </div>
+                    
+                    <script>
+                        function showCustomAlert() {
+                            document.getElementById("customAlert").style.display = "block";
+                        }
+                    
+                        function closeCustomAlert() {
+                            document.getElementById("customAlert").style.display = "none";
+                        }
+                    
+                        function confirmCustomExit() {
+                            window.location.href = "/home"; // Cambia "/home" con il URL effettivo della tua homepage
+                        }
+                    </script>
+                    
+                </div>                 
+            </div>
+    
+        <script>
+            let userScrolling = false;
+    
+            // Rileva lo scroll manuale dell'utente
+            const chatBox = document.getElementById('chat-box');
+            chatBox.addEventListener('scroll', () => {
+                const isAtBottom = chatBox.scrollHeight - chatBox.scrollTop === chatBox.clientHeight;
+                userScrolling = !isAtBottom; // L'utente sta scrollando manualmente se non è in fondo
+            });
+    
+            async function sendMessage() {
+                const input = document.getElementById('message-input');
+                const message = input.value.trim();
+                if (!message) return;
+    
+                await fetch(`/send_message/{{ match.id }}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+    
+                input.value = '';
+                loadMessages();
+            }
+    
+            async function loadMessages() {
+                const response = await fetch(`/get_messages/{{ match.id }}`);
+                const messages = await response.json();
+                const chatBox = document.getElementById('chat-box');
+                const previousScrollHeight = chatBox.scrollHeight; // Registra l'altezza precedente
+    
+                chatBox.innerHTML = ''; // Svuota la chat box
+    
+                messages.forEach(msg => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('message', msg.sender === 'me' ? 'me' : 'them');
+    
+                    const usernameSpan = document.createElement('div');
+                    usernameSpan.classList.add('username');
+                    usernameSpan.textContent = msg.username;
+    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.textContent = msg.content;
+    
+                    messageDiv.appendChild(usernameSpan);
+                    messageDiv.appendChild(contentDiv);
+                    chatBox.appendChild(messageDiv);
+                });
+    
+                // Scroll automatico solo se l'utente è in fondo
+                if (!userScrolling) {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            }
+    
+            async function addToFavorites() {
+                try {
+                    const response = await fetch(`/favorite/{{ match.id }}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+    
+                    const result = await response.json();
+                    if (result.success) {
+                        alert(result.message || "User added to favorites successfully.");
+                    } else {
+                        alert(result.error || "An error occurred.");
+                    }
+                } catch (error) {
+                    alert("An unexpected error occurred: " + error.message);
+                }
+            }
+    
+            function skip() {
+                window.location.href = "/home";
+            }
+    
+            setInterval(loadMessages, 1000); // Refresh messages every second
+        </script>
+
+<script>
+    function addToNewchat(userId) {
+    fetch('/add-to-newchat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId: userId })
+    })
+    .then(response => response.json())
+    .catch(error => console.error('Error:', error)); // Gestione silenziosa degli errori
+}
+</script>
+    
+
+<footer>
+<p style="font-size: 15px;">&copy; {{ year }} Chatmmy.com. All Rights Reserved.</p>
+<a href="https://www.iubenda.com/privacy-policy/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Privacy Policy">Privacy Policy</a>
+<script type="text/javascript">
+    (function (w,d) {
+        var loader = function () {
+            var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+            s.src="https://cdn.iubenda.com/iubenda.js";
+            tag.parentNode.insertBefore(s,tag);
+        };
+        if(w.addEventListener){
+            w.addEventListener("load", loader, false);
+        }else if(w.attachEvent){
+            w.attachEvent("onload", loader);
+        }else{
+            w.onload = loader;
+        }
+    })(window, document);
+</script>
+
+<a href="https://www.iubenda.com/privacy-policy/92010610/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Cookie Policy">Cookie Policy</a>
+<script type="text/javascript">
+    (function (w,d) {
+        var loader = function () {
+            var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+            s.src="https://cdn.iubenda.com/iubenda.js";
+            tag.parentNode.insertBefore(s,tag);
+        };
+        if(w.addEventListener){
+            w.addEventListener("load", loader, false);
+        }else if(w.attachEvent){
+            w.attachEvent("onload", loader);
+        }else{
+            w.onload = loader;
+        }
+    })(window, document);
+</script>
+<a href="https://www.iubenda.com/terms-and-conditions/92010610" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Terms and Conditions">Terms and Conditions</a>
+<script type="text/javascript">
+    (function (w,d) {
+        var loader = function () {
+            var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+            s.src="https://cdn.iubenda.com/iubenda.js";
+            tag.parentNode.insertBefore(s,tag);
+        };
+        if(w.addEventListener){
+            w.addEventListener("load", loader, false);
+        }else if(w.attachEvent){
+            w.attachEvent("onload", loader);
+        }else{
+            w.onload = loader;
+        }
+    })(window, document);
+</script>
+</footer>
+
+</body>
+</html>
